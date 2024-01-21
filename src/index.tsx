@@ -24,7 +24,7 @@ const AndroidWallpaper = AndroidWallpaperModule
       }
     );
 
-export type WallpaperScreenType = 'lock' | 'home';
+export type WallpaperScreenType = 'lock' | 'home' | 'both';
 
 export function isSetWallpaperAllowed(): Promise<boolean> {
   return AndroidWallpaper.isSetWallpaperAllowed();
