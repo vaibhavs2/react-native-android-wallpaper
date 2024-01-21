@@ -23,6 +23,7 @@
     "!**/.*"
   ],
   "scripts": {
+    "example": "yarn workspace react-native-android-wallpaper-example",
     "test": "jest",
     "typecheck": "tsc --noEmit",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
@@ -77,6 +78,9 @@
     "react": "*",
     "react-native": "*"
   },
+  "workspaces": [
+    "example"
+  ],
   "packageManager": "yarn@3.6.1",
   "engines": {
     "node": ">= 18.0.0"
@@ -158,5 +162,6 @@
     "name": "RNAndroidWallpaperSpec",
     "type": "modules",
     "jsSrcsDir": "src"
-  }
+  },
+  "private": "true"
 }

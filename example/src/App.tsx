@@ -2,8 +2,8 @@ import * as React from 'react';
 
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import {
-  getCropSetWallpaper,
   isSetWallpaperAllowed,
+  setWallpaper,
 } from 'react-native-android-wallpaper';
 
 const IMAGE =
@@ -11,16 +11,13 @@ const IMAGE =
 export default function App() {
   const onPress = async () => {
     isSetWallpaperAllowed()
-      .then(() => getCropSetWallpaper(IMAGE, 'home'))
+      .then(() => setWallpaper(IMAGE, 'BOTH'))
       .catch(() => console.log("Can't set wallpaper"));
   };
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        onPress={onPress}
-        style={{ padding: 40, backgroundColor: 'pink' }}
-      >
+      <TouchableOpacity onPress={onPress} style={styles.button}>
         <Text>Set Wallpaper</Text>
       </TouchableOpacity>
     </View>
@@ -38,4 +35,5 @@ const styles = StyleSheet.create({
     height: 60,
     marginVertical: 20,
   },
+  button: { padding: 40, backgroundColor: 'pink' },
 });

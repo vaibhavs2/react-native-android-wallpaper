@@ -62,7 +62,7 @@ class ImageCropActivity : AppCompatActivity() {
       this.imageLoadingJob?.cancel();
     }
     this.imageLoadingJob = GlobalScope.launch(Dispatchers.IO) {
-      val bitmap = loadImageToBitmap(imageUrlToSet)
+      val bitmap = ImageUtils.loadImageToBitmap(imageUrlToSet)
 
       // Switch back to the main thread to update UI
       withContext(Dispatchers.Main) {
@@ -88,25 +88,6 @@ class ImageCropActivity : AppCompatActivity() {
       }
       snackbar.show() }
   }
-
-  fun loadImageToBitmap(imageUrl: String): Bitmap? {
-    val url = URL(imageUrl)
-    val urlConnection = url.openConnection() as HttpURLConnection
-    var bitMap:Bitmap? = null
-    try {
-      val inputStream = urlConnection.inputStream
-      val options = BitmapFactory.Options()
-      options.inPreferredConfig = Bitmap.Config.ARGB_8888
-       bitMap = BitmapFactory.decodeStream(inputStream, null, options)
-    } catch (e: Exception) {
-        this.showSnackBarMessage("Encountered network error, try again!", true)
-    }
-    finally {
-      urlConnection.disconnect();
-    }
-    return  bitMap;
-  }
-
   private fun previewWallpaperInFragment() {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
       this.showSnackBarMessage("Your device doesn't support changing wallpaper", true)

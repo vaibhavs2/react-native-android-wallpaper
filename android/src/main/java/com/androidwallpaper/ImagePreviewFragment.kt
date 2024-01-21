@@ -69,11 +69,11 @@ class ImagePreviewFragment : Fragment() {
   }
 
   @RequiresApi(Build.VERSION_CODES.N)
-  fun setWalpapper(bitmap: Bitmap, context: Context, whichScreenToSet: String) {
+  fun setWalpapper(bitmap: Bitmap, context: Context, whichScreenToSet: String="BOTH") {
     val wallpaperManager = WallpaperManager.getInstance(context)
-    if (whichScreenToSet == "lock") {
+    if (whichScreenToSet == "LOCK") {
       wallpaperManager.setBitmap(bitmap, null, true, WallpaperManager.FLAG_LOCK)
-    } else if (whichScreenToSet == "home") {
+    } else if (whichScreenToSet == "HOME") {
       wallpaperManager.setBitmap(bitmap, null, true, WallpaperManager.FLAG_SYSTEM)
     } else {
       wallpaperManager.setBitmap(
