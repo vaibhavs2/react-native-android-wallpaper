@@ -1,0 +1,16 @@
+
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<!-- Pressed state -->
+<item android:state_pressed="true">
+  <shape android:shape="oval">
+    <solid android:color="#90808080" /> <!-- Set the semi-transparent gray background color -->
+  </shape>
+</item>
+<!-- Default state -->
+<item>
+  <shape android:shape="oval">
+    <solid android:color="#70808080" /> <!-- Set the gray background color -->
+  </shape>
+</item>
+</selector>
+

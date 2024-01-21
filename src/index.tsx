@@ -24,6 +24,22 @@ const AndroidWallpaper = AndroidWallpaperModule
       }
     );
 
-export function multiply(a: number, b: number): Promise<number> {
-  return AndroidWallpaper.multiply(a, b);
+export type WallpaperScreenType = 'lock' | 'home';
+
+export function isSetWallpaperAllowed(): Promise<boolean> {
+  return AndroidWallpaper.isSetWallpaperAllowed();
+}
+
+export function setWallpaper(
+  imageUrl: string,
+  whichScreen: WallpaperScreenType
+): Promise<string> {
+  return AndroidWallpaper.setWallpaper(imageUrl, whichScreen);
+}
+
+export function getCropSetWallpaper(
+  imageUrl: string,
+  whichScreen: WallpaperScreenType
+) {
+  AndroidWallpaper.getCropSetWallpaper(imageUrl, whichScreen);
 }

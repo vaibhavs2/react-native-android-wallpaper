@@ -1,18 +1,28 @@
 import * as React from 'react';
 
-import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from 'react-native-android-wallpaper';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import {
+  getCropSetWallpaper,
+  isSetWallpaperAllowed,
+} from 'react-native-android-wallpaper';
 
+const IMAGE =
+  'https://firebasestorage.googleapis.com/v0/b/wallpaper-975d0.appspot.com/o/images%2Fviratkholi-1.jpeg?alt=media';
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
-
-  React.useEffect(() => {
-    multiply(3, 7).then(setResult);
-  }, []);
+  const onPress = async () => {
+    isSetWallpaperAllowed()
+      .then(() => getCropSetWallpaper(IMAGE, 'home'))
+      .catch(() => console.log("Can't set wallpaper"));
+  };
 
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
+      <TouchableOpacity
+        onPress={onPress}
+        style={{ padding: 40, backgroundColor: 'pink' }}
+      >
+        <Text>Set Wallpaper</Text>
+      </TouchableOpacity>
     </View>
   );
 }
