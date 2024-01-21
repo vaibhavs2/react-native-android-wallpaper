@@ -1,6 +1,7 @@
 package com.androidwallpaper
 
 import Utilities.ScreenUtils
+import Utilities.WallpaperScreenType
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Build
@@ -27,7 +28,7 @@ import androidx.core.animation.doOnEnd
 
 class ImageCropActivity : AppCompatActivity() {
   private final lateinit var imageUrlToSet: String;
-  private final lateinit var whichScreenToSet: String;
+  private final lateinit var whichScreenToSet: WallpaperScreenType;
   private var cropImageView: CropImageView? = null;
   private var screenLayout: ConstraintLayout? = null;
   private var imageLoadingJob: Job? = null;
@@ -36,7 +37,7 @@ class ImageCropActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_image_crop);
-    this.whichScreenToSet = this.intent.getStringExtra("whichScreen").toString();
+    this.whichScreenToSet =  WallpaperScreenType.valueOf(this.intent.getStringExtra("whichScreen").toString())
     this.imageUrlToSet = this.intent.getStringExtra("imageUrl").toString();
     this.screenLayout = findViewById(R.id.screen_layout)
     this.cropImageView = findViewById(R.id.cropImageView);

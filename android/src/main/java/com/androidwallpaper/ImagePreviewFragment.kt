@@ -1,6 +1,8 @@
 package com.androidwallpaper
 
+import ImageUtils
 import Utilities.ScreenUtils
+import Utilities.WallpaperScreenType
 import android.annotation.SuppressLint
 import android.app.WallpaperManager
 import android.content.Context
@@ -18,6 +20,9 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class ImagePreviewFragment : Fragment() {
   @SuppressLint("NewApi")
@@ -43,12 +48,16 @@ class ImagePreviewFragment : Fragment() {
     }
     val setWallpaperButton = view.findViewById<Button>(R.id.setWallpaperButton)
     setWallpaperButton.setOnClickListener {
-      setWallpaperButton.isEnabled=false
-      this.setWalpapper(
-        bitmap!!,
-        requireActivity(),
-        requireArguments().getString(WALLPAPER_PLACEC, "")
-      )
+      setWallpaperButton.isEnabled = false
+
+        ScreenUtils.setWallpaper(
+          WallpaperScreenType.valueOf(requireArguments().getString(WALLPAPER_PLACEC, "BOTH")),
+          bitmap!!,
+          requireActivity()
+        )
+        Toast.makeText(context, "Wallpaper Applied!", Toast.LENGTH_SHORT).show();
+
+
     }
     return view
   }
@@ -58,32 +67,17 @@ class ImagePreviewFragment : Fragment() {
     private const val WALLPAPER_PLACEC = "whereToSetWallpaper"
 
     @JvmStatic
-    fun newInstance(bitmap: Bitmap, whereToSetWallpaper: String): ImagePreviewFragment {
+    fun newInstance(
+      bitmap: Bitmap,
+      whereToSetWallpaper: WallpaperScreenType
+    ): ImagePreviewFragment {
       val fragment = ImagePreviewFragment()
       val args = Bundle()
       args.putParcelable(ARG_BITMAP_DATA, bitmap)
-      args.putString(WALLPAPER_PLACEC, whereToSetWallpaper)
+      args.putString(WALLPAPER_PLACEC, whereToSetWallpaper.toString())
       fragment.arguments = args
       return fragment
     }
-  }
-
-  @RequiresApi(Build.VERSION_CODES.N)
-  fun setWalpapper(bitmap: Bitmap, context: Context, whichScreenToSet: String="BOTH") {
-    val wallpaperManager = WallpaperManager.getInstance(context)
-    if (whichScreenToSet == "LOCK") {
-      wallpaperManager.setBitmap(bitmap, null, true, WallpaperManager.FLAG_LOCK)
-    } else if (whichScreenToSet == "HOME") {
-      wallpaperManager.setBitmap(bitmap, null, true, WallpaperManager.FLAG_SYSTEM)
-    } else {
-      wallpaperManager.setBitmap(
-        bitmap,
-        null,
-        true,
-        WallpaperManager.FLAG_LOCK or WallpaperManager.FLAG_SYSTEM
-      )
-    }
-    Toast.makeText(context, "Wallpaper Applied!", Toast.LENGTH_SHORT).show();
   }
 
 

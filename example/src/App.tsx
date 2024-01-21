@@ -6,8 +6,7 @@ import {
   setWallpaper,
 } from 'react-native-android-wallpaper';
 
-const IMAGE =
-  'https://firebasestorage.googleapis.com/v0/b/wallpaper-975d0.appspot.com/o/images%2Fviratkholi-1.jpeg?alt=media';
+const IMAGE = 'https://picsum.photos/200';
 export default function App() {
   const onPress = async () => {
     isSetWallpaperAllowed()

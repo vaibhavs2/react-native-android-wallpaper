@@ -1,9 +1,9 @@
 package com.androidwallpaper
 
+import Utilities.ScreenUtils
+import Utilities.WallpaperScreenType
 import android.app.WallpaperManager
 import android.content.Intent
-import android.graphics.BitmapRegionDecoder
-import android.graphics.Rect
 import android.os.Build
 import android.widget.Toast
 import com.facebook.react.bridge.Promise
@@ -15,13 +15,11 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.net.HttpURLConnection
-import java.net.URL
 
 
-class AndroidWallpaperModule internal constructor(context: ReactApplicationContext):
+class AndroidWallpaperModule internal constructor(context: ReactApplicationContext) :
   ReactContextBaseJavaModule(context) {
-  private var isWallpaperSettingUp:Job? = null;
+  private var isWallpaperSettingUp: Job? = null;
 
   override fun getName(): String {
     return NAME
@@ -38,7 +36,7 @@ class AndroidWallpaperModule internal constructor(context: ReactApplicationConte
   }
 
   @ReactMethod
-  fun setWallpaper(imageUrl: String, whichScreen: String = "BOTH", promise: Promise?) {
+  fun setWallpaper(imageUrl: String, whichScreen: String, promise: Promise?) {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
       promise?.reject("Your device doesn't support changing wallpaper")
       return
@@ -49,32 +47,31 @@ class AndroidWallpaperModule internal constructor(context: ReactApplicationConte
 
     this.isWallpaperSettingUp = GlobalScope.launch(Dispatchers.IO) {
       val bitMap = ImageUtils.loadImageToBitmap(imageUrl)
-      withContext(Dispatchers.Main){
-        if(bitMap!=null){
-          val wallpaperManager = WallpaperManager.getInstance(reactApplicationContext)
-          if (whichScreen == "LOCK") {
-            wallpaperManager.setBitmap(bitMap, null, true, WallpaperManager.FLAG_LOCK)
-          } else if (whichScreen == "HOME") {
-            wallpaperManager.setBitmap(bitMap, null, true, WallpaperManager.FLAG_SYSTEM)
-          } else {
-            wallpaperManager.setBitmap(
-              bitMap,
-              null,
-              true,
-              WallpaperManager.FLAG_LOCK or WallpaperManager.FLAG_SYSTEM
-            )
-          }
+      if (bitMap != null) {
+        ScreenUtils.setWallpaper(
+          WallpaperScreenType.valueOf(whichScreen),
+          bitMap,
+          reactApplicationContext
+        )
+      }
+      withContext(Dispatchers.Main) {
+        if (bitMap == null) {
+          Toast.makeText(reactApplicationContext, "Applying wallpaper failed!", Toast.LENGTH_SHORT)
+            .show();
+          promise?.reject("Applying wallpaper failed!")
+        } else {
+          Toast.makeText(reactApplicationContext, "Wallpaper Applied!", Toast.LENGTH_SHORT).show();
+          promise?.resolve("Wallpaper Applied!")
         }
+
       }
     }
-    Toast.makeText(reactApplicationContext, "Wallpaper Applied!", Toast.LENGTH_SHORT).show();
-    promise?.resolve("Wallpaper Applied!")
   }
 
 
   @ReactMethod
-  fun getCropSetWallpaper(imageUrl:String,whichScreen:String="BOTH"){
-    val intent = Intent(reactApplicationContext.currentActivity, ImageCropActivity::class.java )
+  fun getCropSetWallpaper(imageUrl: String, whichScreen: String = "BOTH") {
+    val intent = Intent(reactApplicationContext.currentActivity, ImageCropActivity::class.java)
     intent.putExtra("imageUrl", imageUrl)
     intent.putExtra("whichScreen", whichScreen)
     reactApplicationContext.currentActivity?.startActivity(intent)
