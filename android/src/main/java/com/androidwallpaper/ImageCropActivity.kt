@@ -1,15 +1,20 @@
 package com.androidwallpaper
 
+import ImageUtils
 import Utilities.ScreenUtils
 import Utilities.WallpaperScreenType
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.animation.doOnEnd
 import com.canhub.cropper.CropImageView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
@@ -17,13 +22,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.net.HttpURLConnection
-import java.net.URL
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
-import android.graphics.Color
-import android.view.View
-import androidx.core.animation.doOnEnd
+
 
 
 class ImageCropActivity : AppCompatActivity() {

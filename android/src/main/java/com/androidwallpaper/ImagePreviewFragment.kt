@@ -1,28 +1,20 @@
 package com.androidwallpaper
 
-import ImageUtils
 import Utilities.ScreenUtils
 import Utilities.WallpaperScreenType
 import android.annotation.SuppressLint
-import android.app.WallpaperManager
-import android.content.Context
 import android.graphics.Bitmap
-import android.os.Build
 import android.os.Bundle
 import android.util.TypedValue
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import androidx.fragment.app.Fragment
 
 class ImagePreviewFragment : Fragment() {
   @SuppressLint("NewApi")
@@ -31,7 +23,6 @@ class ImagePreviewFragment : Fragment() {
     savedInstanceState: Bundle?
   ): View? {
     this.revertStatusBarChanges(false)
-
     val view = inflater.inflate(R.layout.fragment_image_preview, container, false)
     val imageView = view.findViewById<ImageView>(R.id.previewImage);
     val bitmap: Bitmap? = arguments?.getParcelable(ARG_BITMAP_DATA)
@@ -90,14 +81,16 @@ class ImagePreviewFragment : Fragment() {
 
   private fun revertStatusBarChanges(revert: Boolean = true) {
     if (revert) {
-      activity?.window?.statusBarColor = this.getDefaultStatusBarColor()
-      activity?.window?.decorView?.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+      requireActivity().window.clearFlags(
+        WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+          or WindowManager.LayoutParams.TYPE_STATUS_BAR
+      )
       return
     }
-    activity?.window?.statusBarColor =
-      ContextCompat.getColor(requireContext(), android.R.color.transparent)
-    activity?.window?.decorView?.systemUiVisibility =
-      View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+    requireActivity().window.setFlags(
+      WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+      WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+    );
 
   }
 
