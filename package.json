@@ -162,5 +162,6 @@
     "name": "RNAndroidWallpaperSpec",
     "type": "modules",
     "jsSrcsDir": "src"
-  }
+  },
+  "private": true
 }
