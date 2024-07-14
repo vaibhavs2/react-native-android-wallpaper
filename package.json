@@ -183,5 +183,6 @@
     "type": "module-mixed",
     "languages": "kotlin-objc",
     "version": "0.38.2"
-  }
+  },
+  "private": true
 }

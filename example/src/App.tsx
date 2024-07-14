@@ -1,17 +1,23 @@
-import { useState, useEffect } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from 'react-native-android-wallpaper';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import {
+  isSetWallpaperAllowed,
+  getCropSetWallpaper,
+} from 'react-native-android-wallpaper';
 
+const IMAGE =
+  'https://firebasestorage.googleapis.com/v0/b/wallpaper-975d0.appspot.com/o/images%2F1707767945658.webp?alt=media';
 export default function App() {
-  const [result, setResult] = useState<number | undefined>();
-
-  useEffect(() => {
-    multiply(3, 7).then(setResult);
-  }, []);
+  const onPress = async () => {
+    isSetWallpaperAllowed()
+      .then(() => getCropSetWallpaper(IMAGE, 'BOTH'))
+      .catch(() => console.log("Can't set wallpaper"));
+  };
 
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
+      <TouchableOpacity onPress={onPress} style={styles.button}>
+        <Text>Set Wallpaper</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -27,4 +33,5 @@ const styles = StyleSheet.create({
     height: 60,
     marginVertical: 20,
   },
+  button: { padding: 40, backgroundColor: 'pink' },
 });
