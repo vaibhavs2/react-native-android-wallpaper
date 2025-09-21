@@ -1,6 +1,7 @@
 import type { TurboModule } from 'react-native';
 import { TurboModuleRegistry } from 'react-native';
-import type { WallpaperScreenType } from 'react-native-android-wallpaper';
+
+type WallpaperScreenType = 'LOCK' | 'HOME' | 'BOTH';
 
 export interface Spec extends TurboModule {
   multiply(a: number, b: number): Promise<number>;
