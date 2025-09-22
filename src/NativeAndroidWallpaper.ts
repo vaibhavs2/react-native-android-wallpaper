@@ -1,12 +1,12 @@
-import type { TurboModule } from 'react-native';
-import { TurboModuleRegistry } from 'react-native';
+import { TurboModuleRegistry, type TurboModule } from 'react-native';
 
 type WallpaperScreenType = 'LOCK' | 'HOME' | 'BOTH';
 
 export interface Spec extends TurboModule {
-  multiply(a: number, b: number): Promise<number>;
+  multiply(a: number, b: number): number;
 
-  isSetWallpaperAllowed(): Promise<boolean>;
+  isSetWallpaperAllowed(): boolean;
+
   setWallpaper(
     imageUrl: string,
     whichScreen: WallpaperScreenType

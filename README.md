@@ -1,67 +1,32 @@
 # react-native-android-wallpaper
 
-You can crop and set a new wallpaper to your android device using a image URL.
+wallpaper
 
 ## Installation
 
+
 ```sh
-npm install https://github.com/vaibhavs2/react-native-android-wallpaper.git
+npm install react-native-android-wallpaper
 ```
+
 
 ## Usage
 
-### Check if setting wallpaper allowed
+
 ```js
+import { multiply } from 'react-native-android-wallpaper';
 
-import { isSetWallpaperAllowed } from 'react-native-android-wallpaper';
+// ...
 
-isSetWallpaperAllowed().then(allowed=> console.log(allowed))
-
-```
-
-### Set a new wallpaper with a specified image URL
-```js
-import { setWallpaper } from 'react-native-android-wallpaper';
-
-/**
- * 
- * @param  url  -> image string url
- * 
- * @param whereToSetWallpaper -> one of "lock"/ "home" / "both"
- * home -> home screen
- * lock -> lock screen
- * both -> both home and lock screen
- * 
- * */
-
-const result = await setWallpaper("https://someurls.png", 'lock');
-
-```
-
-### Crop and set a new wallpaper with a specified image URL
-```js
-import { getCropSetWallpaper } from 'react-native-android-wallpaper';
-
-/**
- * 
- * @param  url  -> image string url
- * 
- * @param whereToSetWallpaper -> one of "lock"/ "home" / "both"
- * home -> home screen
- * lock -> lock screen
- * both -> both home and lock screen
- * 
- * */
-
-// opens a new activity where you can crop image and set cropped image as  wallpaper
-const result = await getCropSetWallpaper("https://someurls.png", 'lock');
- 
+const result = multiply(3, 7);
 ```
 
 
 ## Contributing
 
-See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
+- [Development workflow](CONTRIBUTING.md#development-workflow)
+- [Sending a pull request](CONTRIBUTING.md#sending-a-pull-request)
+- [Code of conduct](CODE_OF_CONDUCT.md)
 
 ## License
 

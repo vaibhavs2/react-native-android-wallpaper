@@ -1,5 +1,8 @@
 package com.androidwallpaper
 
+import com.facebook.react.bridge.ReactApplicationContext
+import com.facebook.react.module.annotations.ReactModule
+
 import Utilities.ScreenUtils
 import Utilities.WallpaperScreenType
 import android.app.WallpaperManager
@@ -7,36 +10,40 @@ import android.content.Intent
 import android.os.Build
 import android.widget.Toast
 import com.facebook.react.bridge.Promise
-import com.facebook.react.bridge.ReactApplicationContext
-import com.facebook.react.bridge.ReactContextBaseJavaModule
-import com.facebook.react.bridge.ReactMethod
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+@ReactModule(name = AndroidWallpaperModule.NAME)
+class AndroidWallpaperModule(reactContext: ReactApplicationContext) :
+  NativeAndroidWallpaperSpec(reactContext) {
 
-class AndroidWallpaperModule internal constructor(context: ReactApplicationContext) :
-  ReactContextBaseJavaModule(context) {
+  companion object {
+    const val NAME = "AndroidWallpaper"
+  }
+
   private var isWallpaperSettingUp: Job? = null;
-
   override fun getName(): String {
     return NAME
   }
 
-  @ReactMethod
-  fun isSetWallpaperAllowed(promise: Promise?) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-      val wallpaperManager = WallpaperManager.getInstance(reactApplicationContext)
-      promise?.resolve(wallpaperManager.isSetWallpaperAllowed)
-    } else {
-      promise?.resolve(false)
-    }
+  // Example method
+  // See https://reactnative.dev/docs/native-modules-android
+  override fun multiply(a: Double, b: Double): Double {
+    return a * b
   }
 
-  @ReactMethod
-  fun setWallpaper(imageUrl: String, whichScreen: String, promise: Promise?) {
+  override fun isSetWallpaperAllowed( ):Boolean {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+      val wallpaperManager = WallpaperManager.getInstance(reactApplicationContext)
+      return wallpaperManager.isSetWallpaperAllowed;
+    }  
+      return false;
+  }
+
+  override fun setWallpaper(imageUrl: String, whichScreen: String, promise: Promise?):Unit {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
       promise?.reject("Your device doesn't support changing wallpaper")
       return
@@ -69,16 +76,10 @@ class AndroidWallpaperModule internal constructor(context: ReactApplicationConte
   }
 
 
-  @ReactMethod
-  fun getCropSetWallpaper(imageUrl: String, whichScreen: String = "BOTH") {
+  override fun getCropSetWallpaper(imageUrl: String, whichScreen: String):Unit {
     val intent = Intent(reactApplicationContext.currentActivity, ImageCropActivity::class.java)
     intent.putExtra("imageUrl", imageUrl)
     intent.putExtra("whichScreen", whichScreen)
     reactApplicationContext.currentActivity?.startActivity(intent)
-  }
-
-
-  companion object {
-    const val NAME = "AndroidWallpaper"
   }
 }

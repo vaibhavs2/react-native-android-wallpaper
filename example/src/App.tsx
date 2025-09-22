@@ -1,25 +1,19 @@
-import * as React from 'react';
+import { Text, View, StyleSheet, Button } from 'react-native';
+import { multiply, setWallpaper } from 'react-native-android-wallpaper';
 
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import {
-  isSetWallpaperAllowed,
-  getCropSetWallpaper,
-} from 'react-native-android-wallpaper';
-
+const result = multiply(3, 7);
 const IMAGE =
   'https://firebasestorage.googleapis.com/v0/b/wallpaper-975d0.appspot.com/o/images%2F1707767945658.webp?alt=media';
 export default function App() {
-  const onPress = async () => {
-    isSetWallpaperAllowed()
-      .then(() => getCropSetWallpaper(IMAGE, 'BOTH'))
-      .catch(() => console.log("Can't set wallpaper"));
-  };
-
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={onPress} style={styles.button}>
-        <Text>Set Wallpaper</Text>
-      </TouchableOpacity>
+      <Text>Result: {result}</Text>
+      <Button
+        onPress={() => {
+          console.log('billu', multiply(1, 2), setWallpaper(IMAGE, 'BOTH'));
+        }}
+        title="billu"
+      />
     </View>
   );
 }
@@ -30,10 +24,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  box: {
-    width: 60,
-    height: 60,
-    marginVertical: 20,
-  },
-  button: { padding: 40, backgroundColor: 'pink' },
 });
